@@ -1,11 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AuthLoadingSkeleton } from "@/components/auth"
+import { AuthDialog } from "@/components/auth-dialog"
 import { useAuth } from "@/hooks/use-auth"
 import { useTrendingGames } from "@/hooks/use-trending-games"
 import { SocialActivityFeed } from "@/components/profile/social-activity-feed"
@@ -30,6 +32,8 @@ import {
 import Link from "next/link"
 
 export default function HomePage() {
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false)
+  
   const { 
     isAuthenticated, 
     isLoading,
@@ -157,7 +161,11 @@ export default function HomePage() {
               The social network for gamers. Also available on <span className="text-primary">mobile</span> and{" "}
               <span className="text-primary">desktop</span>.
             </p>
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-3">
+            <Button 
+              size="lg" 
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-3"
+              onClick={() => setIsAuthDialogOpen(true)}
+            >
               Get started — it's free!
             </Button>
           </div>
@@ -595,6 +603,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+      
+      {/* Auth Dialog for unauthenticated users */}
+      <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
     </div>
   )
 }
