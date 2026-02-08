@@ -1,15 +1,18 @@
 "use client"
 
+import { useState } from "react"
 import { Navigation } from '@/components/navigation'
 import { FollowsListManager } from '@/components/profile/follows-list-manager'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/hooks/use-auth'
+import { AuthDialog } from "@/components/auth-dialog"
 import { Heart, Search, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 
 export default function FollowsPage() {
   const { user, isAuthenticated } = useAuth()
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false)
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
@@ -26,13 +29,16 @@ export default function FollowsPage() {
                 <p className="text-muted-foreground mb-4">
                   You need to be signed in to view your follows.
                 </p>
-                <Button asChild>
-                  <Link href="/auth/signin">Sign In</Link>
+                <Button onClick={() => setIsAuthDialogOpen(true)}>
+                  Sign In
                 </Button>
               </div>
             </CardContent>
           </Card>
         </div>
+        
+        {/* Auth Dialog */}
+        <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
       </div>
     )
   }

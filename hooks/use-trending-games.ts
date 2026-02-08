@@ -14,12 +14,16 @@ export function useTrendingGames(): UseTrendingGamesReturn {
     setError(null)
 
     try {
+      // Calculate current year date range dynamically
+      const currentYear = new Date().getFullYear()
+      const dateRange = `${currentYear}-01-01,${currentYear}-12-31`
+      
       // Fetch different sets of games in parallel
       const [featuredResponse, trendingResponse, popularResponse] = await Promise.all([
         // Featured: Top rated games from this year
-        fetch('/api/games?ordering=-rating&page_size=6&dates=2024-01-01,2024-12-31'),
+        fetch(`/api/games?ordering=-rating&page_size=6&dates=${dateRange}`),
         // Trending: Recently released popular games
-        fetch('/api/games?ordering=-added&page_size=3&dates=2024-01-01,2024-12-31'),
+        fetch(`/api/games?ordering=-added&page_size=3&dates=${dateRange}`),
         // Popular: Most popular games overall
         fetch('/api/games?ordering=-rating&page_size=4')
       ])

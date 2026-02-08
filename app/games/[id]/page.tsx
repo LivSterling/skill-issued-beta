@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/hooks/use-auth"
 import { useGameDetail } from "@/hooks/use-game-detail"
 import { UserGameActions } from "@/components/games/user-game-actions"
+import { AuthDialog } from "@/components/auth-dialog"
 import { 
   Star, 
   Clock, 
@@ -50,6 +51,7 @@ export default function GameDetailPage() {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
   const [reviewText, setReviewText] = useState("")
   const [isUpdating, setIsUpdating] = useState(false)
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false)
   
   const { 
     isAuthenticated, 
@@ -487,18 +489,21 @@ export default function GameDetailPage() {
                   </>
                 ) : (
                   <>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                      <Link href="/auth">
-                        <Star className="w-4 h-4 mr-2" />
-                        Sign in to Rate & Review
-                      </Link>
+                    <Button 
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={() => setIsAuthDialogOpen(true)}
+                    >
+                      <Star className="w-4 h-4 mr-2" />
+                      Sign in to Rate & Review
                     </Button>
                     
-                    <Button variant="outline" className="border-border hover:border-primary bg-transparent" asChild>
-                      <Link href="/auth">
-                        <Heart className="w-4 h-4 mr-2" />
-                        Sign in to Add to Wishlist
-                      </Link>
+                    <Button 
+                      variant="outline" 
+                      className="border-border hover:border-primary bg-transparent"
+                      onClick={() => setIsAuthDialogOpen(true)}
+                    >
+                      <Heart className="w-4 h-4 mr-2" />
+                      Sign in to Add to Wishlist
                     </Button>
 
                     <Button variant="outline" size="icon" className="border-border hover:border-primary bg-transparent">
@@ -790,6 +795,9 @@ export default function GameDetailPage() {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Auth Dialog for unauthenticated users */}
+      <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
     </div>
   )
 }
